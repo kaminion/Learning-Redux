@@ -1,46 +1,79 @@
 import {createStore} from 'redux';
-const add = document.getElementById("add");
-const minus = document.getElementById("minus");
-const number = document.getElementsByTagName("span")[0];
 
-const ADD = "ADD";
-const MINUS = "MINUS";
+const form = document.querySelector("form");
+const input = document.querySelector("input");
+const ul = document.querySelector("ul");
 
-const handleAdd = () => {
-    countStore.dispatch({type : ADD});
+const ADD_TODO = "ADD_TODO";
+const DELETE_TODO = "DELETE_TODO";
+
+const addToDo = text => {
+    return { type : ADD_TODO, text};
 };
 
-const handleMinus = () => {
-    countStore.dispatch({type : MINUS});
-};
+const deleteToDo = id => {
+    
+    return { type : DELETE_TODO, id};
+}
 
-const reducer = (state = 0, action)=>{
-    // 스위치 케이스문으로 바뀜
-    // if(action.type === "ADD"){
-    //     return ++state;
-    // }else if(action.type === "MINUS")
-    // {
-    //     return --state;
-    // }
-    // else{
-    //     return state;
-    // }
+const reducer = (state = [], action) => 
+{
+    console.log(action);
     switch(action.type)
     {
-        case ADD: return ++state;
-        case MINUS: return --state;
+        case ADD_TODO:
+            const newToDoObj = {text : action.text, id : Date.now()};
+            return [...state, ...newToDoObj];
+        case DELETE_TODO:
+            return state.filter( e => e.id !== parseInt(action.id) ); // HTML id는 STRING으로 날아오기때문에, immutable
         default:
             return state;
     }
-
 };
-const countStore = createStore(reducer);
-
-countStore.subscribe(() => {
-    number.innerText = countStore.getState();
-})
 
 
-add.addEventListener("click", handleAdd);
-minus.addEventListener("click", handleMinus);
+const store = createStore(reducer);
 
+store.subscribe(()=>{
+    console.log(store.getState());
+});
+
+const dispatchAddToDo = text => {
+    store.dispatch(addToDo(text));
+};
+
+const dispatchDeleteToDo = e => {
+    const id = e.target.parentNode.id;
+    store.dispatch(deleteToDo(id));
+}
+
+const paintToDos = ()=>{
+    const toDos = store.getState();
+    ul.innerHTML = "";
+    toDos.forEach((todo)=>{
+        const li = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.innerText = "delete";
+        btn.addEventListener("click", dispatchDeleteToDo);
+
+        li.id = todo.id;
+        li.innerText = todo.text;
+        li.appendChild(btn);
+        ul.appendChild(li);
+    });
+}
+
+store.subscribe(paintToDos);
+
+
+// event handler
+const onSubmit = e => {
+    
+    e.preventDefault();
+    const toDo = input.value;
+    input.value = "";
+    
+    dispatchAddToDo(toDo);
+};
+
+form.addEventListener("submit", onSubmit);
