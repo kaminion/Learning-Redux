@@ -38,8 +38,10 @@ function mapStateToProps(state, props)
     
 }
 // 두번째 인자로 props가 옴
+// 이 함수는 dispatch를 쓸 수 있는 객체를 컴포넌트에 전달해준다.
 function mapDispatchToProps(dispatch)
 {
+    // dispatch는 reduce에게 객체를 action에 담아 전달한다.
     return {
         addToDo : (text) => dispatch(actionCreators.addToDo(text))
     };
