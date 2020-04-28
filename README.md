@@ -28,3 +28,8 @@ mutatet는 불변(immutable)객체가 아닌 가변객체를 의미함
 ```js
     ReactDom.render(<Provider store={store}><App/></Provider>)
 ```
+
+React-Router-DOM에서 얻어가야할 훅들도 있다.
+usePramas같은경우가 해당된다.
+
+Optional 객체도 유용

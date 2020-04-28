@@ -1,8 +1,24 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import { actionCreators } from '../Store';
+import { Link } from 'react-router-dom';
 
-function ToDo({text})
+function ToDo({text, onBtnClick, id})
 {
-    return <li>{text} <button>DEL</button></li>
+    return <li>
+                <Link to={`/${id}`}>
+                    {text} <button onClick={onBtnClick}>DEL</button>
+                </Link>
+            </li>
 }
 
-export default ToDo;
+function mapDispatchProps(dispatch, ownProps)
+{
+    // 여기서 text와 id는 ownProps에 있음
+    console.log(ownProps)
+    return {
+        onBtnClick: () => dispatch(actionCreators.deleteToDo(ownProps.id))
+    }
+}
+
+export default connect(null, mapDispatchProps)(ToDo);

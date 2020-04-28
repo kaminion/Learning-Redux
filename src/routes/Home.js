@@ -26,7 +26,7 @@ function Home({toDos, addToDo})
             <input type="text" value={text} onChange={onChange} />
             <button>Add</button>
         </form>
-        <ul>{toDos.map( toDo => <ToDo {...toDo}> </ToDo>)}</ul>
+        <ul>{toDos.map( toDo => <ToDo key={toDo.id} {...toDo}/>)}</ul>
     </>
 }
 
@@ -46,6 +46,8 @@ function mapDispatchToProps(dispatch)
         addToDo : (text) => dispatch(actionCreators.addToDo(text))
     };
 }
+
+//export const a = connect(()=>{}, ()=>{})(comp);
 
 // mapStateToProps라고 명명해주어야 오류가 안남, 두번째 인자로는 dispatch props를 가짐, 필요없으면 null 주고 디스패치만 줘도됨
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
