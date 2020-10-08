@@ -33,3 +33,9 @@ React-Router-DOM에서 얻어가야할 훅들도 있다.
 usePramas같은경우가 해당된다.
 
 Optional 객체도 유용
+
+### Redux-toolkit
+- 리덕스를 사용하다보면 중복된 코드를 계속 작성하게 됨
+- 이것을 해결하기 위해 리덕스 커뮤니티에서 리덕스 툴킷을 제안
+- 더 적은 코드를 작성
+- yarn add @reduxjs/toolkit
